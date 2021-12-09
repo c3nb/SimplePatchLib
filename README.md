@@ -4,5 +4,6 @@ HarmonyPatch with Delegate
 SimplePatch.Prefix(...);
 SimplePatch.Postfix(...);
 SimplePatch.PrePostfix(...);
-SimplePatch.Property(...);
+SimplePatch.GetterPrefix(...);
+SimplePatch.GetterPostfix(...);
 ```
