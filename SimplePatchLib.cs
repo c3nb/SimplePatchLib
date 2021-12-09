@@ -11,7 +11,7 @@ namespace SimplePatchLib
     public static class SimplePatch
     {
         public static Harmony Harmony => new Harmony(new object().GetAddress().ToString());
-        public static void UnpatchAll() => Harmony.UnpatchAll();
+        public static void UnpatchAll() => Harmony.UnpatchAll(Harmony.Id);
         #region Misc
         public static void Prefix(Type targetType, string targetMethod, Delegate del) => PrefixInternal(targetType, targetMethod, del);
         public static void Postfix(Type targetType, string targetMethod, Delegate del) => PostfixInternal(targetType, targetMethod, del);
