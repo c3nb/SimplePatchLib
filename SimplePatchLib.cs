@@ -16,11 +16,17 @@ namespace SimplePatchLib
         public static void Prefix(Type targetType, string targetMethod, Delegate del) => PrefixInternal(targetType, targetMethod, del);
         public static void Postfix(Type targetType, string targetMethod, Delegate del) => PostfixInternal(targetType, targetMethod, del);
         public static void PrePostfix(Type targetType, string targetMethod, Delegate preDel, Delegate postDel) => PrePostfixInternal(targetType, targetMethod, preDel, postDel);
+        
+        public static void Property<T>(Type targetType, string targetProperty, T value) => Property(targetType, targetProperty, (ref T __result) =>
+        {
+            __result = value;
+            return false;
+        });
         public static void GetterPrefix<T>(Type targetType, string targetProperty, RefFunc<T, bool> patch) => PatchInternal(AccessTools.DeclaredProperty(targetType, targetProperty).GetGetMethod(true), PatchType.Prefix, patch.ToDynamicMethod(), null);
         public static void GetterPrefix<T, T2>(Type targetType, string targetProperty, RefFunc<T, T2, bool> patch) => PatchInternal(AccessTools.DeclaredProperty(targetType, targetProperty).GetGetMethod(true), PatchType.Prefix, patch.ToDynamicMethod(), null);
         public static void GetterPrefix<T>(Type targetType, string targetProperty, Action<T> patch) => PatchInternal(AccessTools.DeclaredProperty(targetType, targetProperty).GetGetMethod(true), PatchType.Prefix, patch.ToDynamicMethod(), null);
-        public static void GetterPostfix<T, T2>(Type targetType, string targetProperty, Action<T, T2> patch) => PatchInternal(AccessTools.DeclaredProperty(targetType, targetProperty).GetGetMethod(true), PatchType.Postfix, patch.ToDynamicMethod(), null);
-        public static void GetterPostfix<T>(Type targetType, string targetProperty, Action<T> patch) => PatchInternal(AccessTools.DeclaredProperty(targetType, targetProperty).GetGetMethod(true), PatchType.Postfix, patch.ToDynamicMethod(), null);
+        public static void GetterPostfix<T, T2>(Type targetType, string targetProperty, Action<T, T2> patch) => PatchInternal(AccessTools.DeclaredProperty(targetType, targetProperty).GetGetMethod(true), PatchType.Postfix, null, patch.ToDynamicMethod());
+        public static void GetterPostfix<T>(Type targetType, string targetProperty, Action<T> patch) => PatchInternal(AccessTools.DeclaredProperty(targetType, targetProperty).GetGetMethod(true), PatchType.Postfix, null, patch.ToDynamicMethod());
         #endregion
         #region Non-Generic
         public static void Prefix(Type targetType, string targetMethod, Func<bool> patch) => PrefixInternal(targetType, targetMethod, patch);
