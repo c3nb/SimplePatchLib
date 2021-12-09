@@ -17,7 +17,7 @@ namespace SimplePatchLib
         public static void Postfix(Type targetType, string targetMethod, Delegate del) => PostfixInternal(targetType, targetMethod, del);
         public static void PrePostfix(Type targetType, string targetMethod, Delegate preDel, Delegate postDel) => PrePostfixInternal(targetType, targetMethod, preDel, postDel);
         
-        public static void Property<T>(Type targetType, string targetProperty, T value) => Property(targetType, targetProperty, (ref T __result) =>
+        public static void Property<T>(Type targetType, string targetProperty, T value) => GetterPrefix(targetType, targetProperty, (ref T __result) =>
         {
             __result = value;
             return false;
